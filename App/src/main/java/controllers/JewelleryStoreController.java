@@ -9,18 +9,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-public class JewelleryStoreController {
+public class JewelleryStoreController extends Controller{
 	private Stage stage;
 	private Scene scene;
-
+	private Parent root;
+	
     @FXML
     void goBaackButton(ActionEvent event) throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("/resources_view/ComboBox.fxml"));
 		stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources_view/ComboBox.fxml")); 
+		root = loader.load();
+		ComboBoxController comboBoxController= loader.getController();
+		comboBoxController.greetUser(Controller.username);
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
     }
+    
 	@FXML
 	void addToCartButton(ActionEvent event) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("/resources_view/AddToCart.fxml"));

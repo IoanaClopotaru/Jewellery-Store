@@ -24,18 +24,18 @@ public class Controller {
 
 	@FXML
 	private TextField usernameField;
-	private String username;
+	protected static String username;
 
 	@FXML
 	void loginButton(ActionEvent event) throws IOException{
 		UserService userService = new UserService();
 		try {
 			if (userService.findUser(usernameField.getText(), passwordField.getText()) != null) {
-				username = usernameField.getText();
+	            username=usernameField.getText();
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources_view/ComboBox.fxml"));
 				root = loader.load();
 				ComboBoxController comboBoxController= loader.getController();
-				comboBoxController .greetUser(username);
+				comboBoxController.greetUser(username);
 				stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 				scene = new Scene(root);
 				stage.setScene(scene);
@@ -66,4 +66,5 @@ public class Controller {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+
 }
