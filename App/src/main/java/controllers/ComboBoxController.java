@@ -16,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -54,6 +56,10 @@ public class ComboBoxController implements Initializable {
 	@FXML
 	private void loadItems(ActionEvent event) {
 		String selectedPage = comboBox.getValue();
+		if (selectedPage == null || selectedPage.isEmpty()) {
+			informationAlert(event, "You have not selected an item!!!");
+			return;
+		}
 		switch (selectedPage) {
 		case "Ring":
 			try {
@@ -63,7 +69,7 @@ public class ComboBoxController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 			} catch (IOException e) {
-				e.printStackTrace();
+				informationAlert(event, "You have not selected an item!!!");
 			}
 			break;
 		case "Bracelet":
@@ -74,7 +80,7 @@ public class ComboBoxController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 			} catch (IOException e) {
-				e.printStackTrace();
+				informationAlert(event, "You have not selected an item!!!");
 			}
 			break;
 		case "Necklace":
@@ -85,7 +91,7 @@ public class ComboBoxController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 			} catch (IOException e) {
-				e.printStackTrace();
+				informationAlert(event, "You have not selected an item!!!");
 			}
 			break;
 		case "Earrings":
@@ -96,7 +102,7 @@ public class ComboBoxController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 			} catch (IOException e) {
-				e.printStackTrace();
+				informationAlert(event, "You have not selected an item!!!");
 			}
 			break;
 		default:
@@ -106,41 +112,51 @@ public class ComboBoxController implements Initializable {
 	}
 
 	private UserGreetings userGreeting() {
-        String regex = "^[a-z].*";
-        Pattern pattern = Pattern.compile(regex);
-        List<UserGreetings> userGreetings = new ArrayList<>();
+		String regex = "^[a-z].*";
+		Pattern pattern = Pattern.compile(regex);
+		List<UserGreetings> userGreetings = new ArrayList<>();
 
-        for (UserGreetings greeting : UserGreetings.values()) {
-            String value = greeting.getUserHello();
-            Matcher matcher = pattern.matcher(value);
-            if (matcher.matches()) {
-                userGreetings.add(greeting);
-            }
-        }
+		for (UserGreetings greeting : UserGreetings.values()) {
+			String value = greeting.getUserHello();
+			Matcher matcher = pattern.matcher(value);
+			if (matcher.matches()) {
+				userGreetings.add(greeting);
+			}
+		}
 
-        Random random = new Random();
-        int randomIndex = random.nextInt(userGreetings.size());
-        return userGreetings.get(randomIndex);
-    }
+		Random random = new Random();
+		int randomIndex = random.nextInt(userGreetings.size());
+		return userGreetings.get(randomIndex);
+	}
 
-    public void greetUser(String username) {
-        UserGreetings greeting = userGreeting();
-        String userHello = capitalizeFirstLetter(greeting.getUserHello());
-        nameLabel.setText(userHello + ", " + username + "!");
-    }
+	public void greetUser(String username) {
+		UserGreetings greeting = userGreeting();
+		String userHello = capitalizeFirstLetter(greeting.getUserHello());
+		nameLabel.setText(userHello + ", " + username + "!");
+	}
 
-    private String capitalizeFirstLetter(String input) {
-        StringBuilder result = new StringBuilder();
-        String[] words = input.split(" ");
+	private String capitalizeFirstLetter(String input) {
+		StringBuilder result = new StringBuilder();
+		String[] words = input.split(" ");
 
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                String firstLetter = word.substring(0, 1).toUpperCase();
-                String remainingLetters = word.substring(1).toLowerCase();
-                result.append(firstLetter).append(remainingLetters).append(" ");
-            }
-        }
+		for (String word : words) {
+			if (!word.isEmpty()) {
+				String firstLetter = word.substring(0, 1).toUpperCase();
+				String remainingLetters = word.substring(1).toLowerCase();
+				result.append(firstLetter).append(remainingLetters).append(" ");
+			}
+		}
 
-        return result.toString().trim();
-    }
+		return result.toString().trim();
+	}
+
+	public void informationAlert(ActionEvent event, String informationAlert) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setContentText(informationAlert);
+		alert.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+		alert.setHeaderText("Information alert");
+		alert.getDialogPane().setPrefSize(480, 320);
+		alert.showAndWait();
+	}
 }

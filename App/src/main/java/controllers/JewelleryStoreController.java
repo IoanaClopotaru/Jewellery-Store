@@ -34,5 +34,16 @@ public class JewelleryStoreController extends Controller{
 		stage.setScene(scene);
 		stage.show();
 	}
+	   @FXML
+	    void goBackToCombo(ActionEvent event) throws IOException {
+			stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources_view/ComboBox.fxml")); 
+			root = loader.load();
+			ComboBoxController comboBoxController= loader.getController();
+			comboBoxController.greetUser(Controller.username);
+			scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+	    }
 
 }
